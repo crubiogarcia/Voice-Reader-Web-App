@@ -1,0 +1,160 @@
+body {
+    background-color: #000000; 
+    font-family: Arial, sans-serif; 
+}
+
+.navbar-brand {
+    font-size: 5rem;
+    color: #f8f8f8;  
+    font-family: Arial, sans-serif;
+    padding-left: 100px; 
+    padding-right: 15px;
+
+}
+
+.navbar-brand:hover { 
+    color: #ff9800 !important; 
+}
+
+.navbar .navbar-nav .nav-link {
+    font-size: 3rem; 
+    color: #ffffff !important; 
+    padding-left: 15px; 
+    padding-right: 100px;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+    color: #ff9800 !important; 
+
+}
+
+h1 {
+    color: #F8F8F8; 
+}
+
+.container {
+    padding: 20px; 
+}
+
+.heading-spacing {
+    font-size: 3rem;
+    color: #F8F8F8;
+    margin-top: 200px; /* Adjust this value to control the spacing between the heading and the box */
+}
+
+#drop-area {
+    border: 10px dashed #ffffff;
+    padding: 50px;
+    text-align: center;
+    color: #F8F8F8;
+    margin-top: 15px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    height: 500px; /* Adjust as needed */
+
+}
+
+#drop-area:hover {
+    background-color: #ff9800;  /* Change background on hover */
+    border-color: #ffffff;      /* Optional: change border on hover */
+    color: #000000;             /* Optional: change text color on hover */
+}
+
+
+
+.audio-button {
+    border: 10px solid #ffffff;
+    background-color: transparent; /* No background */
+    cursor: pointer; /* Show hand cursor */
+    padding: 30px; /* Add some padding */
+    margin: 5px; /* Add margin between buttons */
+    border-radius: 10px; /* Optional: round button corners */
+    font-size: 5rem;
+    color: #ffffff;
+    display: flex;          /* Use flexbox for alignment */
+    align-items: center;    /* Center the content vertically */
+}
+/* Style the buttons when #drop-area is hovered */
+.audio-button:hover {
+    border-color: #ffffff;
+    background-color: #ff9800;
+    color: #000000;
+}
+
+#play-pause-button img {
+    width: 80px;                    /* Set width of the speaker logo */
+    height: 80px;                   /* Set height of the speaker logo */
+    margin-right: 10px;             /* Space between the image and text */
+    margin-left: 0 px;  
+}
+#download-button img {
+    width: 50px;                    /* Set width of the speaker logo */
+    height: 60px;                   /* Set height of the speaker logo */
+    margin-right: 10px;             /* Space between the image and text */
+    margin-left: 0 px;  
+}
+
+#new-button img {
+    width: 70px;                    /* Set width of the speaker logo */
+    height: 70px;                   /* Set height of the speaker logo */
+    margin-right: 10px;             /* Space between the image and text */
+    margin-left: 0 px;  
+}  
+
+.button-container {
+    display: flex;                  
+    justify-content: center;  /* Center horizontally */
+    align-items: center;      /* Center vertically */
+    flex-direction: row;      /* Arrange buttons horizontally */
+    font-size: 5rem; 
+    width: auto;              /* Allow width to adjust automatically */
+    white-space: nowrap;      /* Prevent text wrapping */
+}
+
+#audio-controls {
+    margin-top: 300px; 
+    align-items: center;              /* Adjust this to control vertical spacing */
+}
+
+#about-play-button img {
+    width: 60px;                    /* Set width of the speaker logo */
+    height: 40px;                   /* Set height of the speaker logo */
+    margin-right: 10px;             /* Space between the image and text */
+    margin-left: 0 px;  
+}
+
+
+#about-text {
+    font-size: 2.5rem;        
+    color: #F8F8F8;                 
+    font-family: Arial, sans-serif; 
+    padding: 300px;   
+    text-align: center;            
+}
+
+
+#about-play-button{
+    background-color: #ffffff;  
+    border: 10px solid #ffffff;   
+    border-radius: 0;          
+    cursor: pointer;             
+    outline: none;               
+    font-size: 3rem; 
+    font-weight: bold;              
+    display: flex;                  /* Use flexbox for alignment */
+    align-items: center;            /* Center the content vertically */
+    padding: 10px 20px;            /* Add some padding around the button */
+    transition: background-color 0.2s, border 0.2s;  
+}
+
+#about-play-button img {
+    width: 60px;                    /* Set width of the speaker logo */
+    height: 40px;                   /* Set height of the speaker logo */
+    margin-right: 10px;             /* Space between the image and text */
+    margin-left: 0 px;  
+}
+
+#about-play-button:hover {
+    background-color: #ff9800;      /* Change background color on hover */
+    border: 10px solid #ff9800;     /* Change border color on hover */
+}

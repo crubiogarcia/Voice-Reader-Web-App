@@ -1,0 +1,167 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 id="head-text" class="text-center heading-spacing">Drag and drop file here .txt, .pdf or .docx</h1>
+        
+        <!-- Drop area -->
+        <div id="drop-area" class="drop-box">
+            <p id="drop-text">Drag your text file here</p> 
+            <audio id="audio-player" preload="auto"></audio>
+        </div>
+
+        <div id="progress-container" style="display: none;" class="container">
+            <div class="circle-container">
+                <div class="circle circle-1"></div>
+                <div class="circle circle-2"></div>
+                <div class="circle circle-3"></div>
+                <div class="circle circle-4"></div>
+                <div class="circle circle-5"></div>
+                <div class="circle circle-6"></div>
+                <div class="circle circle-7"></div>
+                <div class="circle circle-8"></div>
+                <div class="circle circle-9"></div>
+                <div class="circle circle-10"></div>
+                <div class="circle circle-11"></div>
+                <div class="circle circle-12"></div>
+                <div class="circle circle-13"></div>
+                <div class="circle circle-14"></div>
+                
+                <div id="progress-percentage" class="percentage">Loading...</div>
+            </div>
+        </div>
+        
+        <!-- Separate container for audio controls -->
+        <div id="audio-controls" style="display: none;" class="container button-container">
+            <button id="play-pause-button" class="audio-button">
+                <img src="{{ url_for('static', filename='images/play.png') }}" alt="Play" class="audio-icon" id="play-icon"> 
+                Play
+            </button>
+            <button id="download-button" class="audio-button">
+                <img src="{{ url_for('static', filename='images/download.png') }}" alt="Download" class="audio-icon">
+                Download
+            </button>
+            <button id="new-button" class="audio-button">
+                <img src="{{ url_for('static', filename='images/reload.png') }}" alt="Upload new file" class="audio-icon">
+                New File
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const dropArea = document.getElementById('drop-area');
+        const dropText = document.getElementById('drop-text');
+        const progressContainer = document.getElementById('progress-container');
+        const audioPlayer = document.getElementById('audio-player');
+        const audioControls = document.getElementById('audio-controls');
+        const MAX_CHAR_LIMIT = 5000;
+
+        // Function to clear previous messages
+        function clearMessage() {
+            dropText.textContent = "Drag your text file here";
+            dropText.style.color = ""; // Reset color to default
+        }
+
+        // Prevent default behavior (like opening the file in the browser)
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false)
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Highlight drop area when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => {
+                dropArea.classList.add('highlight');
+            }, false)
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => {
+                dropArea.classList.remove('highlight');
+            }, false)
+        });
+
+        // Handle dropped file
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const file = dt.files[0];
+            handleFileUpload(file);
+        }
+
+        function handleFileUpload(file) {
+            clearMessage(); // Clear previous messages
+
+            if (!file) return; // Exit if no file is selected
+
+            const allowedTypes = ['application/pdf', 'text/plain', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            if (!allowedTypes.includes(file.type)) {
+                dropText.textContent = "Only .docx, .txt, or .pdf files are allowed.";
+                dropText.style.color = "red";
+                return;
+            }
+
+            // Read the file content (only for .txt files)
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const text = event.target.result;
+
+                // Check character count
+                if (text.length > MAX_CHAR_LIMIT) {
+                    dropText.textContent = `File exceeds the maximum character limit of ${MAX_CHAR_LIMIT} characters.`;
+                    dropText.style.color = "red";
+                    return;
+                }
+
+                // Show progress container
+                progressContainer.style.display = "block";
+
+                // Hide drop area and text
+                dropArea.style.display = "none";
+
+                // Create FormData object to send the file to the server
+                const formData = new FormData();
+                formData.append("file", file);
+
+                // Use Fetch API to send the file to the server
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        dropText.textContent = data.error;
+                        dropText.style.color = "red";
+                        progressContainer.style.display = "none"; // Hide progress
+                        dropArea.style.display = "block"; // Show drop area again
+                        return;
+                    }
+
+                    // File uploaded successfully, display the audio player
+                    audioPlayer.src = data.audio_url;
+                    audioControls.style.display = 'block';
+                    progressContainer.style.display = "none"; // Hide progress
+                })
+                .catch(error => {
+                    console.error('Error uploading file:', error);
+                    dropText.textContent = 'File upload failed. Please try again.';
+                    dropText.style.color = "red";
+                    progressContainer.style.display = "none"; // Hide progress on error
+                    dropArea.style.display = "block"; // Show drop area again
+                });
+            };
+
+            // Only read .txt files for character count check
+            if (file.type === 'text/plain') {
+                reader.readAsText(file);
+            }
+        }
+    </script>
+
+{% endblock content %}

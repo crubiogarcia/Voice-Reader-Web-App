@@ -1,0 +1,73 @@
+# Spanish translations for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-10-19 21:44+0100\n"
+"PO-Revision-Date: 2024-10-19 21:44+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+msgid "Voice Reader"
+msgstr "Voice Reader"
+
+msgid "About"
+msgstr "Acerca de"
+
+msgid "Drag and drop file here .txt, .pdf or .docx"
+msgstr "Arrastre y suelte el archivo .txt, .pdf o .docx"
+
+msgid "Drag your text file here"
+msgstr "Arrastre y suelte el archivo aquí"
+
+msgid "Loading..."
+msgstr "Cargando..."
+
+msgid "Play"
+msgstr "Reproducir"
+
+msgid "Download"
+msgstr "Descarga"
+
+msgid "New file"
+msgstr "Nuevo archivo"
+
+msgid "Voice Reader is a web service that converts text documents in .pdf, .txt and .docx into voice, featuring a friendly UI for easy visual accessibility."
+msgstr "Voice Reader es un servicio web que convierte en voz documentos de texto en .pdf, .txt y .docx, con una interfaz fácil y accesible."
+
+msgid "Click to Play about Voice Reader"
+msgstr "Haga Click para escuchar sobre Voice Reader"
+
+msgid "Only .docx, .txt, or .pdf files are allowed."
+msgstr "Solo permite archivos .docx, .txt, o .pdf"
+
+msgid "File upload failed. Please try again."
+msgstr "Fallo en la carga del archivo. Por favor, inténtelo de nuevo."
+
+msgid "Pause"
+msgstr "Pausa"
+
+msgid "File too large, must be less than 10MB."
+msgstr "Archivo demasiado grande, debe ser menor de 10 MB."
+
+msgid "File type not allowed, only .pdf, .txt, or .docx are allowed."
+msgstr "Solo permite archivos .docx, .txt, o .pdf"
+
+msgid "File exceeds the maximum character limit of {MAX_CHAR_LIMIT} characters."
+msgstr "El archivo excede el límite máximo de caracteres de {MAX_CHAR_LIMIT}."
+
+msgid "No text found in the file."
+msgstr "No se encontró texto en el archivo."
+
+msgid "Audio file not found."
+msgstr "No se puedo encontrar el archivo de audio."

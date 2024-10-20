@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+    
+    {% if title %}
+        <title>{{_('Voice Reader')}} {{title}}</title>
+    {% else %}
+        <title>{{_('Voice Reader')}}</title>  
+    {% endif %}
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/icon.png') }}">
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+            <div class="container-fluid"> <!-- Use container-fluid for full width -->
+                <a class="navbar-brand" href="/">{{_('Voice Reader')}}</a>
+                <div class="collapse navbar-collapse justify-content-end"> <!-- Align links to the right -->
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link" href="/about">{{_('About')}}</a>
+                        <div class="nav-item d-flex align-items-center"> 
+                            <a class="nav-link {{ 'selected' if current_language == 'en' else '' }}" href="#" id="lang-en" onclick="selectLanguage('en')">EN</a>
+                            <a class="nav-link {{ 'selected' if current_language == 'es' else '' }}" href="#" id="lang-es" onclick="selectLanguage('es')">ES</a>>
+                        </div>
+                    </div>
+
+                        
+ 
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script>
+        function selectLanguage(lang) {
+            // Set the selected language in the session
+            fetch('/set_language/' + lang, { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Language set successfully:', lang);
+                        location.reload(); // Reload the page to apply language changes
+                    } else {
+                        console.error('Failed to set language:', response.status);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error setting language:', error);
+                });
+        }
+    </script>
+    
+</body>
+
+</html>

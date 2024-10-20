@@ -1,0 +1,73 @@
+# English translations for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-10-19 21:44+0100\n"
+"PO-Revision-Date: 2024-10-19 21:44+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+msgid "Voice Reader"
+msgstr ""
+
+msgid "About"
+msgstr ""
+
+msgid "Drag and drop file here .txt, .pdf or .docx"
+msgstr ""
+
+msgid "Drag your text file here"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Play"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "New file"
+msgstr ""
+
+msgid "Voice Reader is a web service that converts text documents in .pdf, .txt and .docx into voice, featuring a friendly UI for easy visual accessibility."
+msgstr ""
+
+msgid "Click to Play about Voice Reader"
+msgstr ""
+
+msgid "Only .docx, .txt, or .pdf files are allowed."
+msgstr ""
+
+msgid "File upload failed. Please try again."
+msgstr ""
+
+msgid "Pause"
+msgstr ""
+
+msgid "File too large, must be less than 10MB"
+msgstr ""
+
+msgid "File type not allowed, only .pdf, .txt, or .docx are allowed."
+msgstr ""
+
+msgid "File exceeds the maximum character limit of {MAX_CHAR_LIMIT} characters."
+msgstr ""
+
+msgid "No text found in the file."
+msgstr ""
+
+msgid "Audio file not found."
+msgstr ""

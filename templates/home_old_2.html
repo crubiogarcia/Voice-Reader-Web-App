@@ -1,0 +1,154 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container mt-5">
+        <h1 id="head-text" class="text-center heading-spacing">Drag and drop file here .txt, .pdf or .docx</h1>
+        
+        <!-- Drop area -->
+        <div id="drop-area" class="drop-box">
+            <p id="drop-text">Drag your text file here</p> 
+            <audio id="audio-player" preload="auto"></audio>
+        </div>
+
+        <div id="progress-container" style="display: none;" class="container">
+            <div class="circle-container">
+                <div class="circle circle-1"></div>
+                <div class="circle circle-2"></div>
+                <div class="circle circle-3"></div>
+                <div class="circle circle-4"></div>
+                <div class="circle circle-5"></div>
+                <div class="circle circle-6"></div>
+                <div class="circle circle-7"></div>
+                <div class="circle circle-8"></div>
+                <div class="circle circle-9"></div>
+                <div class="circle circle-10"></div>
+                <div class="circle circle-11"></div>
+                <div class="circle circle-12"></div>
+                <div class="circle circle-13"></div>
+                <div class="circle circle-14"></div>
+                
+                <div id="progress-percentage" class="percentage">Loading...</div>
+            </div>
+        </div>
+        
+        <!-- Separate container for audio controls -->
+        <div id="audio-controls" style="display: none;" class="container button-container">
+            <button id="play-pause-button" class="audio-button">
+                <img src="{{ url_for('static', filename='images/play.png') }}" alt="Play" class="audio-icon" id="play-icon"> 
+                Play
+            </button>
+            <button id="download-button" class="audio-button">
+                <img src="{{ url_for('static', filename='images/download.png') }}" alt="Download" class="audio-icon">
+                Download
+            </button>
+            <button id="new-button" class="audio-button">
+                <img src="{{ url_for('static', filename='images/reload.png') }}" alt="Upload new file" class="audio-icon">
+                New File
+            </button>
+        </div>
+
+    <script>
+        // Get ids of drop area
+        const dropArea = document.getElementById("drop-area");
+        const dropText = document.getElementById("drop-text");  // Define dropText
+        const audioPlayer = document.getElementById("audio-player");
+        const downloadButton = document.getElementById("download-button");
+        const audioControls = document.getElementById("audio-controls");
+        const headText = document.getElementById("head-text")
+        const newFileButton = document.getElementById("new-button");
+        const playPauseButton = document.getElementById("play-pause-button");
+        const playIcon = document.getElementById("play-icon");
+
+        // Prevent default behavior when dragging over the drop area
+        dropArea.addEventListener("dragover", function(e) {
+            e.preventDefault(); // Prevent default behavior (open file)
+        });
+    
+        // Handle the drop event
+        dropArea.addEventListener("drop", function(e) {
+            e.preventDefault(); // Prevent default behavior (open file)
+            const files = e.dataTransfer.files; 
+
+            if (files.length > 0) {
+                // Hide the drop area and heading text
+                fl = files[0]
+                const allowedTypes = ['application/pdf', 'text/plain', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']; // pdf, txt, docx
+
+                if (!allowedTypes.includes(fl.type)) {
+                    // If file type is not allowed, change the drop text to show an error message
+                    dropText.textContent = "Only .docx, .txt, or .pdf files are allowed.";
+                    //dropText.style.color = "white"; // Optional: change color
+                    return;
+                }
+                // Show progress container
+                const progressContainer = document.getElementById("progress-container");
+                const progressPercentage = document.getElementById("progress-percentage");
+                progressContainer.style.display = "block";
+
+                // Hide the drop area and heading text
+                dropArea.style.display = "none";
+                headText.style.display = "none";
+
+                // Create FormData object
+                const formData = new FormData();
+                formData.append("file", fl); 
+
+                // Use Fetch API to send the file to the server
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('File upload failed');
+                })
+                .then(data => {
+                    console.log('File uploaded successfully:', data);
+                    console.log('Audio URL:', data.audio_url); 
+
+                    // Hide the loading circle once processing is complete
+                    progressContainer.style.display = "none";
+                    // Set the audio source URL
+                    audioPlayer.src = data.audio_url;
+
+                    // Show the audio controls (buttons)
+                    audioControls.style.display = 'flex'; // Show the buttons container
+                })
+                .catch(error => console.error('Error uploading file:', error));
+            }
+        });
+    
+        // Play/Pause button functionality
+        playPauseButton.addEventListener('click', function() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playPauseButton.querySelector('img').src = "{{ url_for('static', filename='images/pause.png') }}"; // Update to pause icon
+                playPauseButton.querySelector('img').alt = "Pause"; // Update alt text
+                playPauseButton.childNodes[1].nodeValue = "Pause"; // Update button text to "Pause"
+            } else {
+                audioPlayer.pause();
+                playPauseButton.querySelector('img').src = "{{ url_for('static', filename='images/play.png') }}"; // Update to play icon
+                playPauseButton.querySelector('img').alt = "Play"; // Update alt text
+                playPauseButton.childNodes[1].nodeValue = "Play"; // Update button text to "Play"
+            }
+        });
+    
+        // Download button functionality
+        downloadButton.addEventListener('click', function() {
+            const audioUrl = audioPlayer.src;
+            const link = document.createElement('a');
+            link.href = audioUrl;
+            link.download = 'audio.mp3';  // Change the filename as needed
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        // New file button functionality
+        newFileButton.addEventListener("click", function() {
+            location.reload(); // Reload the current page
+        });
+
+    </script>
+{% endblock content %}

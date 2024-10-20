@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="about-container">
+    <div id="about-text">
+        {{_('Voice Reader is a web service that converts text documents in .pdf, .txt and .docx into voice, featuring a friendly UI for easy visual accessibility.')}}
+    </div>
+
+    <div class="button-container">
+        <button id="about-play-button">
+            <img src="{{ url_for('static', filename='images/speaker.png') }}" alt="Play">
+            {{_('Click to Play about Voice Reader')}}
+        </button>
+        <audio id="audio-player" src="{{ audio_src }}" preload="auto"></audio>
+    </div>
+</div>
+
+    <script>
+        const playButton = document.getElementById('about-play-button');
+        const audioPlayer = document.getElementById('audio-player');
+
+        // Pass the current language to JavaScript
+        const currentLanguage = "{{ current_language }}";  // Get the current language from the template
+
+        // Set the audio source based on the language
+        if (currentLanguage === 'es') {
+            audioPlayer.src = "{{ url_for('static', filename='audio/about_es.mp3') }}";
+        } else {
+            audioPlayer.src = "{{ url_for('static', filename='audio/about_en.mp3') }}";
+        }
+        
+        // Play/Pause button functionality
+        playButton.addEventListener('click', function() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+            } else {
+                audioPlayer.pause();
+            }
+        });
+    </script>
+{% endblock content %}
+
+

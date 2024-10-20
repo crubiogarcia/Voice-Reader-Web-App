@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center heading-spacing">Drag and drop file here</h1>
+        <div id="drop-area" class="drop-box">
+            <p id="drop-text">Drag your text file here</p> 
+            <audio id="audio-player" preload="auto"></audio>
+            
+            <div id="audio-controls" style="display: none;" class="container">
+                <button id="play-button" class="audio-button">
+                    <img src="{{ url_for('static', filename='images/play.png') }}" alt="Play" class="audio-icon"> 
+                    Play
+                </button>
+                <button id="download-button" class="audio-button">
+                    <img src="{{ url_for('static', filename='images/download.png') }}" alt="Download" class="audio-icon">
+                    Download
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // Get ids of drop area
+        const dropArea = document.getElementById("drop-area");
+        const dropText = document.getElementById("drop-text");  // Define dropText
+        const audioPlayer = document.getElementById("audio-player");
+        const playButton = document.getElementById("play-button");
+        const downloadButton = document.getElementById("download-button");
+        const audioControls = document.getElementById("audio-controls");
+
+        // Prevent default behavior when dragging over the drop area
+        dropArea.addEventListener("dragover", function(e) {
+            e.preventDefault(); // Prevent default behavior (open file)
+        });
+
+        // Handle the drop event
+        dropArea.addEventListener("drop", function(e) {
+            e.preventDefault(); // Prevent default behavior (open file)
+            const files = e.dataTransfer.files; 
+
+            if (files.length > 0) {
+
+                // Hide the drop text
+                dropText.style.display = "none"; 
+
+                // Create FormData object
+                const formData = new FormData();
+                formData.append("file", files[0]); 
+
+                // Use Fetch API to send the file to the server
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('File upload failed');
+                })
+                .then(data => {
+                    console.log('File uploaded successfully:', data);
+                    console.log('Audio URL:', data.audio_url);  // Add this line
+
+                    // Set the audio source URL
+                    audioPlayer.src = data.audio_url;
+
+                    // Show the play and download buttons
+                    audioControls.style.display = 'flex'; // Show the buttons container
+                })
+                .catch(error => console.error('Error uploading file:', error));
+            }
+        });
+
+        // Play button functionality
+        playButton.addEventListener('click', function() {
+            audioPlayer.play();
+        });
+
+        // Download button functionality
+        downloadButton.addEventListener('click', function() {
+            const audioUrl = audioPlayer.src;
+            const link = document.createElement('a');
+            link.href = audioUrl;
+            link.download = 'audio.mp3';  // Change the filename as needed
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+
+{% endblock content %}
