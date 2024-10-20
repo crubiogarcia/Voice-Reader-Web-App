@@ -21,17 +21,17 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
             <div class="container-fluid"> <!-- Use container-fluid for full width -->
                 <a class="navbar-brand" href="/">{{_('Voice Reader')}}</a>
-                <div class="collapse navbar-collapse justify-content-end"> <!-- Align links to the right -->
-                    <div class="navbar-nav">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav"> <!-- Added id for collapse functionality -->
+                    <div class="navbar-nav ml-auto"> <!-- Use ml-auto to align links to the right -->
                         <a class="nav-item nav-link" href="/about">{{_('About')}}</a>
                         <div class="nav-item d-flex align-items-center">
                             <a class="nav-link {{ 'selected' if current_language == 'en' else '' }}" href="#" id="lang-en" onclick="selectLanguage('en')">EN</a>
                             <a class="nav-link {{ 'selected' if current_language == 'es' else '' }}" href="#" id="lang-es" onclick="selectLanguage('es')">ES</a>
                         </div>
                     </div>
-
-                        
- 
                 </div>
             </div>
         </nav>
