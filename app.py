@@ -6,6 +6,7 @@ import pdfplumber
 from gtts import gTTS
 import docx
 import os
+import chardet
 
 app = Flask(__name__)  # Initialize the Flask app
 CORS(app)
@@ -80,36 +81,46 @@ def upload_file():
     # Extract text from the file
     text = ''
     file_extension = file.filename.rsplit('.', 1)[1].lower()
-    if file_extension == 'pdf':
-        with pdfplumber.open(file_path) as pdf:
-            text = ''.join(page.extract_text() for page in pdf.pages if page.extract_text())
-    elif file_extension == 'txt':
-        with open(file_path, 'r', encoding='utf-8') as txt_file:
-            text = txt_file.read()      
-    elif file_extension == 'docx':
-        doc = docx.Document(file_path)
-        text = '\n'.join([para.text for para in doc.paragraphs])
+    try:
+        if file_extension == 'pdf':
+            with pdfplumber.open(file_path) as pdf:
+                text = ''.join(page.extract_text() for page in pdf.pages if page.extract_text())
+        elif file_extension == 'txt':
+            with open(file_path, 'rb') as txt_file:
+                raw_data = txt_file.read()
+                result = chardet.detect(raw_data)
+                encoding = result['encoding']
+                text = raw_data.decode(encoding)  # Decode with detected encoding
+        elif file_extension == 'docx':
+            doc = docx.Document(file_path)
+            text = '\n'.join([para.text for para in doc.paragraphs])
 
-    # Check character count
-    if len(text) > MAX_CHAR_LIMIT:
-        return jsonify({'error': _('File exceeds the maximum character limit of {} characters.').format(MAX_CHAR_LIMIT)}), 400
+        # Check character count
+        if len(text) > MAX_CHAR_LIMIT:
+            return jsonify({'error': _('File exceeds the maximum character limit of {} characters.').format(MAX_CHAR_LIMIT)}), 400
 
-    if not text:
-        return jsonify({'error': _('No text found in the file.')}), 400
-    
-    # Determine the language for TTS based on the selected language
-    current_language = session.get('lang', 'en')  # Default to 'en'
-    tts_lang = 'en' if current_language == 'en' else 'es'  
-    
-    # Convert text to speech and create a temporary audio file
-    with tempfile.NamedTemporaryFile(suffix='.mp3', delete=False) as temp_audio_file:
-        tts = gTTS(text=text, lang=tts_lang)
-        tts.save(temp_audio_file.name)  # Save TTS output to the temporary file
+        if not text:
+            return jsonify({'error': _('No text found in the file.')}), 400
         
-        # Return the audio file URL
-        audio_file_url = f'/audio/{os.path.basename(temp_audio_file.name)}'
+        # Determine the language for TTS based on the selected language
+        current_language = session.get('lang', 'en')  # Default to 'en'
+        tts_lang = 'en' if current_language == 'en' else 'es'  
+        
+        # Convert text to speech and create a temporary audio file
+        with tempfile.NamedTemporaryFile(suffix='.mp3', delete=False) as temp_audio_file:
+            tts = gTTS(text=text, lang=tts_lang)
+            tts.save(temp_audio_file.name)  # Save TTS output to the temporary file
+            
+            # Return the audio file URL
+            audio_file_url = url_for('serve_audio', filename=os.path.basename(temp_audio_file.name))
+        
+        return jsonify({'audio_url': audio_file_url})
     
-    return jsonify({'audio_url': audio_file_url})
+    finally:
+        # Optionally delete the temporary text file
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
 
 @app.route('/audio/<filename>')
 def serve_audio(filename):
