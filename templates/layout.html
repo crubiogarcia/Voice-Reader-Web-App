@@ -5,13 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
-    
+
     {% if title %}
         <title>{{_('Voice Reader')}} {{title}}</title>
     {% else %}
-        <title>{{_('Voice Reader')}}</title>  
+        <title>{{_('Voice Reader')}}</title>
     {% endif %}
 
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/icon.png') }}">
@@ -19,18 +18,23 @@
 
 <body>
     <header class="site-header">
-        <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-            <div class="container-fluid"> <!-- Use container-fluid for full width -->
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"> <!-- Changed navbar-dark bg-steel to navbar-dark bg-dark -->
+            <div class="container-fluid">
                 <a class="navbar-brand" href="/">{{_('Voice Reader')}}</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav"> <!-- Added id for collapse functionality -->
-                    <div class="navbar-nav ml-auto"> <!-- Use ml-auto to align links to the right -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="navbar-nav ml-auto">
                         <a class="nav-item nav-link" href="/about">{{_('About')}}</a>
-                        <div class="nav-item d-flex align-items-center">
-                            <a class="nav-link {{ 'selected' if current_language == 'en' else '' }}" href="#" id="lang-en" onclick="selectLanguage('en')">EN</a>
-                            <a class="nav-link {{ 'selected' if current_language == 'es' else '' }}" href="#" id="lang-es" onclick="selectLanguage('es')">ES</a>
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ _('Language') }}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languageDropdown">
+                                <a class="dropdown-item {{ 'selected' if current_language == 'en' else '' }}" href="#" id="lang-en" onclick="selectLanguage('en')">EN</a>
+                                <a class="dropdown-item {{ 'selected' if current_language == 'es' else '' }}" href="#" id="lang-es" onclick="selectLanguage('es')">ES</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -38,7 +42,7 @@
         </nav>
     </header>
     
-    <div>
+    <div class="container mt-5 pt-5"> <!-- Add margin-top to push content below the navbar -->
         {% block content %}
         {% endblock %}
     </div>
@@ -46,7 +50,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybB1cXxdBb1r7mnM5In6g9kc7q1y8HczANHdoe0eFf6p3z6mx" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 
     <script>
         function selectLanguage(lang) {
@@ -69,3 +72,4 @@
 </body>
 
 </html>
+

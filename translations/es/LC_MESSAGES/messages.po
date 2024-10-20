@@ -71,3 +71,9 @@ msgstr "No se encontró texto en el archivo."
 
 msgid "Audio file not found."
 msgstr "No se puedo encontrar el archivo de audio."
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "Open File Explorer"
+msgstr "Abrir Explorador de Archivos"

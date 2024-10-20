@@ -71,3 +71,9 @@ msgstr ""
 
 msgid "Audio file not found."
 msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Open File Explorer"
+msgstr ""

@@ -6,11 +6,16 @@
         <!-- Drop area -->
         <div id="drop-area" class="drop-box">
             <p id="drop-text">{{_('Drag your text file here')}}</p> 
+            <button id="explore-button" class="explorer-button">
+                {{_('Open File Explorer')}}
+            </button>
+            <input type="file" id="file-input" accept=".txt,.pdf,.docx" style="display: none;">  <!-- Hidden file input -->
             <audio id="audio-player" preload="auto"></audio>
         </div>
 
         <div id="progress-container" style="display: none;" class="container">
             <div class="circle-container">
+                <!-- Progress circles -->
                 <div class="circle circle-1"></div>
                 <div class="circle circle-2"></div>
                 <div class="circle circle-3"></div>
@@ -51,85 +56,112 @@
             playText: "{{ _('Play') }}",
             pauseText: "{{ _('Pause') }}"
         };
-    </script>
-    <script>
+
         // Get ids of drop area
+
+        // Define your translated error messages in JavaScript
+        const fileUploadError = "{{ _('File upload failed. Please try again.') }}";
+        const fileTypeErrorMessage = "{{ _('Only .docx, .txt, or .pdf files are allowed.')}}"
+
+
         const dropArea = document.getElementById("drop-area");
-        const dropText = document.getElementById("drop-text");  // Define dropText
+        const dropText = document.getElementById("drop-text");
         const audioPlayer = document.getElementById("audio-player");
         const downloadButton = document.getElementById("download-button");
         const audioControls = document.getElementById("audio-controls");
-        const headText = document.getElementById("head-text")
+        const headText = document.getElementById("head-text");
         const newFileButton = document.getElementById("new-button");
         const playPauseButton = document.getElementById("play-pause-button");
         const playIcon = document.getElementById("play-icon");
+        const exploreButton = document.getElementById("explore-button");
+        const fileInput = document.getElementById("file-input");
 
-        // Define your translated error message in JavaScript
-        const fileUploadError = "{{ _('File upload failed. Please try again.') }}";
-        const fileTypeErrorMessage = "{{ _('Only .docx, .txt, or .pdf files are allowed.')}}";
+
+        // Trigger the hidden file input when the explore button is clicked
+        exploreButton.addEventListener("click", function() {
+            fileInput.click(); // Trigger click on the hidden file input
+        });
+
+        // Handle file selection from the file explorer
+        fileInput.addEventListener("change", function() {
+            const files = fileInput.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]); // Pass the selected file to the handle function
+            }
+        });
+
+        // Handle file selection from the file explorer
+        fileInput.addEventListener("change", function() {
+            const files = fileInput.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]); // Pass the selected file to the handle function
+            }
+        });
 
         // Prevent default behavior when dragging over the drop area
         dropArea.addEventListener("dragover", function(e) {
             e.preventDefault(); // Prevent default behavior (open file)
         });
-    
+        
         // Handle the drop event
         dropArea.addEventListener("drop", function(e) {
             e.preventDefault(); // Prevent default behavior (open file)
             const files = e.dataTransfer.files; 
 
             if (files.length > 0) {
-                // Hide the drop area and heading text
-                fl = files[0]
-                const allowedTypes = ['application/pdf', 'text/plain', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']; // pdf, txt, docx
-
-                if (!allowedTypes.includes(fl.type)) {
-                    // If file type is not allowed, change the drop text to show an error message
-                    dropText.textContent = fileTypeErrorMessage;
-                    //dropText.style.color = "white"; // Optional: change color
-                    return;
-                }
-                // Show progress container
-                const progressContainer = document.getElementById("progress-container");
-                progressContainer.style.display = "block";
-
-                // Hide the drop area and heading text
-                dropArea.style.display = "none";
-                headText.style.display = "none";
-
-                // Create FormData object
-                const formData = new FormData();
-                formData.append("file", fl); 
-
-                // Use Fetch API to send the file to the server
-                fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        dropText.textContent = data.error;
-                        progressContainer.style.display = "none"; // Hide progress
-                        dropArea.style.display = "block"; // Show drop area again
-                        headText.style.display = "block";
-                        return;
-                    }
-
-                    // File uploaded successfully, display the audio player
-                    audioPlayer.src = data.audio_url;
-                    audioControls.style.display = 'flex'; // Show the buttons container
-                    progressContainer.style.display = "none"; // Hide progress
-                })
-                .catch(error => {
-                    console.error(fileUploadError);
-                    dropText.textContent = _('File upload failed. Please try again.');
-                    progressContainer.style.display = "none"; // Hide progress on error
-                    dropArea.style.display = "block"; // Show drop area again
-                    headText.style.display = "block";
-                });
+                handleFileUpload(files[0]); // Pass the dropped file to the handle function
             }
         });
+
+        // Function to handle file uploads
+        function handleFileUpload(file) {
+            const allowedTypes = ['application/pdf', 'text/plain', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']; // Allowed file types
+            
+            if (!allowedTypes.includes(file.type)) {
+                dropText.textContent = fileTypeErrorMessage; // Show error message
+                return;
+            }
+
+            // Show progress container
+            const progressContainer = document.getElementById("progress-container");
+            progressContainer.style.display = "block";
+
+            // Hide the drop area and heading text
+            dropArea.style.display = "none";
+            headText.style.display = "none";
+
+            // Create FormData object
+            const formData = new FormData();
+            formData.append("file", file); 
+
+            // Use Fetch API to send the file to the server
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    dropText.textContent = data.error;
+                    progressContainer.style.display = "none"; // Hide progress
+                    dropArea.style.display = "block"; // Show drop area again
+                    headText.style.display = "block";
+                    return;
+                }
+
+                // File uploaded successfully, display the audio player
+                audioPlayer.src = data.audio_url;
+                audioControls.style.display = 'flex'; // Show the buttons container
+                progressContainer.style.display = "none"; // Hide progress
+            })
+            .catch(error => {
+                console.error(fileUploadError);
+                dropText.textContent = fileUploadError;
+                progressContainer.style.display = "none"; // Hide progress on error
+                dropArea.style.display = "block"; // Show drop area again
+                headText.style.display = "block";
+            });
+        }
     
         // Play/Pause button functionality
         playPauseButton.addEventListener('click', function() {
