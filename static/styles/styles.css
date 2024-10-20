@@ -5,11 +5,36 @@ body {
 
 .navbar-brand {
     font-size: 5rem;
+    background-color: #000000; 
     color: #f8f8f8;  
     font-family: Arial, sans-serif;
     padding-left: 20px; 
     padding-right: 15px;
 
+}
+
+.navbar-collapse {
+    background-color: #000000; /* Adjust this color as needed */
+}
+
+.navbar-dark .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' d='M 3 5 L 27 5 M 3 14 L 27 14 M 3 23 L 27 23'/%3E%3C/svg%3E");
+}
+
+/* Customize the dropdown background if you use dropdowns */
+.dropdown-menu {
+    background-color: black; /* Background color for dropdown menu */
+    color: white; /* Text color for dropdown items */
+}
+
+.dropdown-menu:hover {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='#ff9800' stroke-width='2' d='M 3 5 L 27 5 M 3 14 L 27 14 M 3 23 L 27 23'/%3E%3C/svg%3E");
+}
+
+.dropdown-menu:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Dark background on hover */
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='#ff9800' stroke-width='2' d='M 3 5 L 27 5 M 3 14 L 27 14 M 3 23 L 27 23'/%3E%3C/svg%3E");
+    background-size: cover; /* Ensures the image covers the area */
 }
 
 .navbar-brand:hover { 

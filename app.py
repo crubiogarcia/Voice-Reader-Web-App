@@ -135,5 +135,5 @@ def serve_audio(filename):
         return jsonify({'error': _('Audio file not found.')}), 404
 
 if __name__ == '__main__':
-    #app.run(debug=True)
-    pass
+    app.run(debug=True)
+    #pass
