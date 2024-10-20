@@ -42,8 +42,8 @@ msgstr "Descarga"
 msgid "New file"
 msgstr "Nuevo archivo"
 
-msgid "Voice Reader is a web service that converts text documents in .pdf, .txt and .docx into voice, featuring a friendly UI for easy visual accessibility."
-msgstr "Voice Reader es un servicio web que convierte en voz documentos de texto en .pdf, .txt y .docx, con una interfaz fácil y accesible."
+msgid "Voice Reader is a web service that converts text documents in .pdf, .txt and .docx into audio, featuring a friendly UI for easy visual accessibility."
+msgstr "Voice Reader es un servicio web que convierte documentos de texto en .pdf, .txt y .docx en audio, con una interfaz fácil y accesible."
 
 msgid "Click to Play about Voice Reader"
 msgstr "Haga Click para escuchar sobre Voice Reader"
