@@ -188,6 +188,10 @@ h1 {
     align-items: center;              /* Adjust this to control vertical spacing */
 }
 
+#about-container {
+    padding: 10px; 
+}
+
 #about-play-button img {
     width: 60px;                    /* Set width of the speaker logo */
     height: 40px;                   /* Set height of the speaker logo */
@@ -200,16 +204,9 @@ h1 {
     font-size: 2.5rem;        
     color: #F8F8F8;                 
     font-family: Arial, sans-serif; 
-    padding: 50px;
-    margin-top: 150px; 
+    padding: 5px;
+    margin-top: 200px; 
     text-align: center;            
-}
-
-
-@media (max-width: 576px) {
-    .navbar-brand {
-        font-size: 2rem; /* Adjust size for small screens */
-    }
 }
 
 
@@ -244,6 +241,10 @@ h1 {
 
 /* Adjust button for smaller screens */
 @media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 2rem; /* Adjust size for small screens */
+    }
+
     #about-play-button {
         font-size: 1rem; /* Smaller font size for mobile devices */
         padding: 5px; /* Reduce padding on smaller screens */
